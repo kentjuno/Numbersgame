@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Your Score</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #333;
+        }
+        .details {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Game Results</h1>
+
+    <div class="details">
+        <p id="playerName"></p>
+        <p id="totalNumbers"></p>
+        <p id="elapsedTime"></p>
+    </div>
+
+    <button id="playAgainButton">Play Again</button>
+
+    <script>
+        // Load the player's score and name from localStorage
+        const playerName = localStorage.getItem('sharePlayerName');
+        const totalNumbers = localStorage.getItem('shareTotalNumbers');
+        const elapsedTime = localStorage.getItem('shareElapsedTime');
+
+        // Display the results
+        document.getElementById('playerName').textContent = `Name: ${playerName}`;
+        document.getElementById('totalNumbers').textContent = `Numbers Found: ${totalNumbers}`;
+        document.getElementById('elapsedTime').textContent = `Time: ${elapsedTime} seconds`;
+
+        // Play Again button redirects to the game page
+        document.getElementById('playAgainButton').addEventListener('click', () => {
+            window.location.href = 'index.html'; // Go back to the options page
+        });
+    </script>
+</body>
+</html>

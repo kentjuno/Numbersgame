@@ -1,0 +1,144 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+h1 {
+    color: #333;
+}
+
+#livesContainer {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5em;
+}
+
+#heartIcons {
+    color: red;
+}
+
+#gameContainer {
+    position: relative;
+    width: 100vw;
+    height: 80vh; /* Smaller height to leave space for buttons */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#gameArea {
+    position: relative;
+    width: 90%;
+    height: 90%;
+    border: 2px solid #333;
+    background-color: white;
+    overflow: hidden; /* Prevent numbers from going outside the game area */
+}
+
+.number {
+    position: absolute;
+    font-weight: bold;
+    cursor: pointer;
+    transform-origin: center;
+}
+
+#timer, #score, #currentNumberDisplay {
+    margin-top: 10px;
+    font-size: 1.2em;
+}
+
+#currentNumberDisplay {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+#buttonContainer {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#printButton, #shareButton {
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+#gameOverPopup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 2px solid #333;
+    padding: 20px;
+    text-align: center;
+    z-index: 10;
+}
+
+#gameOverPopup h2 {
+    margin-bottom: 20px;
+}
+
+#gameOverPopup button {
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    #gameArea {
+        width: 90vw;
+        height: 80vh;
+    }
+    h1 {
+        font-size: 1.8em;
+    }
+}
+@media (max-width: 768px) {
+    #gameArea {
+        width: 90vw;
+        height: 70vh;
+    }
+    h1 {
+        font-size: 1.5em;
+    }
+}
+@media (max-width: 480px) {
+    #gameArea {
+        width: 90vw;
+        height: 60vh;
+    }
+    h1 {
+        font-size: 1.2em;
+    }
+}
+
+/* Print Styles */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #gameArea, #gameArea * {
+        visibility: visible;
+    }
+    #gameArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+    }
+}

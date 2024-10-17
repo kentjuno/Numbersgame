@@ -22,12 +22,17 @@ function startGame() {
     document.getElementById('greeting').textContent = `Hello, ${playerName}!`;
 
     if (useBackgroundColor) {
-        // Apply random background color
+        // Apply random background color and set contrasting number colors
         const randomBackgroundColor = getRandomColor();
         gameArea.style.backgroundColor = randomBackgroundColor;
+
+        // Set number color to contrast with background color
+        const contrastingColor = getContrastingColor(randomBackgroundColor);
+        setNumberColor(contrastingColor);
     } else {
-        // Apply white background
+        // Apply white background and set numbers to black
         gameArea.style.backgroundColor = 'white';
+        setNumberColor('black');
     }
 
     shuffledNumbers = shuffleArray([...Array(totalNumbers).keys()].map(i => i + 1)); // Shuffle numbers
@@ -52,7 +57,7 @@ function startGame() {
         div.className = 'number';
         div.textContent = number;
 
-        // Apply random font size between 16px and 30px (doubled size)
+        // Apply random font size between 16px and 30px
         const randomFontSize = Math.floor(Math.random() * 15) + 16; // Random size between 16 and 30
         div.style.fontSize = randomFontSize + 'px';
 
@@ -100,12 +105,14 @@ function checkNumber(element, number) {
 }
 
 function handleWrongGuess() {
-    wrongGuesses++;
-    lives--;
-    heartIcons.innerHTML = '❤️'.repeat(lives); // Update heart icons
+    if (lives > 0) {
+        wrongGuesses++;
+        lives--;
+        heartIcons.innerHTML = '❤️'.repeat(lives); // Update heart icons
 
-    if (wrongGuesses >= 3) {
-        showGameOver(); // Trigger game over when wrong guesses reach 3
+        if (lives === 0) {
+            showGameOver(); // Trigger game over when wrong guesses reach 3
+        }
     }
 }
 
@@ -142,25 +149,24 @@ function endGame() {
 
 function showGameOver() {
     clearInterval(timerInterval); // Stop the timer
-    gameOverPopup.classList.remove('hidden'); // Show the Game Over popup
+    console.log("Game Over triggered"); // Debug line
+    // Remove the 'hidden' class from the game over popup to make it visible
+    gameOverPopup.classList.remove('hidden'); 
+
+    // Alternatively, set the display style directly
+    gameOverPopup.style.display = 'block'; 
 }
 
 function resetGame() {
     startGame(); // Restart the game
 }
 
-// Print the game content when print button is clicked
-printButton.addEventListener('click', () => {
-    window.print();
-});
-
-// Navigate to the share page when share button is clicked
-shareButton.addEventListener('click', () => {
-    window.location.href = 'share.html';
-});
-
-// Handle try again button click
-tryAgainButton.addEventListener('click', resetGame);
+// Set the color of the numbers
+function setNumberColor(color) {
+    document.querySelectorAll('.number').forEach(numberElement => {
+        numberElement.style.color = color; // Set text color
+    });
+}
 
 // Get a random non-overlapping position
 function getRandomNonOverlappingPosition(element) {
@@ -203,7 +209,7 @@ function getRandomRotation() {
     return Math.floor(Math.random() * 361); // Random angle between 0 and 360
 }
 
-// Get a random color
+// Get a random color (background color)
 function getRandomColor() {
     const letters = '0123456789ABCDEF';
     let color = '#';
@@ -213,5 +219,29 @@ function getRandomColor() {
     return color;
 }
 
+// Get contrasting color (either black or white)
+function getContrastingColor(hexColor) {
+    // Convert hex to RGB
+    const rgb = hexToRgb(hexColor);
+
+    // Calculate luminance to determine if background is light or dark
+    const luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
+
+    // If luminance is more than 0.5, it's a light background, so return black. Otherwise, return white.
+    return luminance > 0.5 ? 'black' : 'white';
+}
+
+// Convert hex color to RGB
+function hexToRgb(hex) {
+    const bigint = parseInt(hex.slice(1), 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return { r, g, b };
+}
+
 // Start the game when the page loads
 window.onload = startGame;
+
+// Handle try again button click
+tryAgainButton.addEventListener('click', resetGame);

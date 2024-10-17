@@ -1,44 +1,132 @@
+/* Body styling for index.html */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: #f0f0f0;
+    background-color: #f5f5f7; /* Light neutral background */
+    color: #333; /* Darker text for contrast */
+}
+
+#h1 {
+    color: #1c1c1e; /* Darker text for the heading */
+    font-weight: 500;
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Subtle text shadow */
+    margin-bottom: 20px;
+}
+
+/* Container for the index page content */
+#indexContainer {
+    background-color: white; /* Clean white background */
+    border-radius: 20px; /* Smooth rounded corners */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    padding: 40px;
+    text-align: center;
+    width: 350px;
+}
+
+/* Input field styling */
+.inputGroup {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    font-size: 1.1em;
+    margin-bottom: 8px;
+    color: #1c1c1e;
+}
+
+input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #d1d1d6;
+    font-size: 1em;
+    outline: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s;
+}
+
+input[type="text"]:focus, input[type="number"]:focus {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Shadow on focus */
+}
+
+input[type="checkbox"] {
+    margin-left: 10px;
+    transform: scale(1.2); /* Make the checkbox a bit larger */
+    cursor: pointer;
+}
+
+/* Button styling consistent with the game page */
+button {
+    padding: 12px 25px;
+    font-size: 1em;
+    background-color: #0078d4; /* Windows 11 blue */
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #005a9e; /* Darker blue on hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #indexContainer {
+        width: 90vw;
+    }
+}
+
+/* Body styling for a clean, modern feel */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f5f5f7; /* Light neutral background */
+    color: #333; /* Darker text for contrast */
 }
 
 h1 {
-    color: #333;
+    color: #1c1c1e; /* Darker text for the heading */
+    font-weight: 500;
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Subtle text shadow */
+    margin-bottom: 20px;
 }
 
-#livesContainer {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 1.5em;
-}
-
-#heartIcons {
-    color: red;
-}
-
+/* Container for game area to ensure it doesn't get too narrow */
 #gameContainer {
     position: relative;
-    width: 100vw;
-    height: 80vh; /* Smaller height to leave space for buttons */
+    width: 90%;
+    max-width: 800px; /* Limit max width for larger screens */
+    height: 80vh; /* Use a height that scales well with different devices */
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 20px;
 }
 
 #gameArea {
     position: relative;
-    width: 90%;
-    height: 90%;
-    border: 2px solid #333;
-    background-color: white;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: white; /* Clean white background */
+    border-radius: 20px; /* Smooth rounded corners */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
     overflow: hidden; /* Prevent numbers from going outside the game area */
 }
 
@@ -47,82 +135,135 @@ h1 {
     font-weight: bold;
     cursor: pointer;
     transform-origin: center;
+    transition: transform 0.2s; /* Smooth scaling animation */
+    color: black; /* Ensure text color contrasts well with the background */
 }
 
-#timer, #score, #currentNumberDisplay {
+.number:hover {
+    transform: scale(1.2); /* Scale up slightly on hover */
+}
+
+/* Displaying current number to pick and remaining lives */
+#timer, #score, #currentNumberDisplay, #livesContainer {
     margin-top: 10px;
     font-size: 1.2em;
+    font-weight: 500;
+    color: #1c1c1e; /* Strong contrast */
 }
 
 #currentNumberDisplay {
     font-size: 1.5em;
     font-weight: bold;
+    margin-bottom: 10px;
 }
 
+#livesContainer {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#heartIcons {
+    color: red;
+    font-size: 1.5em;
+}
+
+/* Button styling consistent with the game page */
 #buttonContainer {
     display: flex;
     gap: 10px;
     margin-top: 20px;
+    flex-wrap: wrap; /* Ensure buttons wrap if the screen is narrow */
 }
 
-#printButton, #shareButton {
-    padding: 10px 20px;
+#printButton, #shareButton, #tryAgainButton {
+    padding: 12px 25px;
     font-size: 1em;
+    background-color: #0078d4; /* Windows 11 blue */
+    color: white;
+    border: none;
+    border-radius: 10px;
     cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    margin-top: 10px; /* Add spacing above each button */
 }
 
+#printButton:hover, #shareButton:hover, #tryAgainButton:hover {
+    background-color: #005a9e; /* Darker blue on hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow on hover */
+}
+
+/* Game Over Popup Styling */
 #gameOverPopup {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: white;
-    border: 2px solid #333;
-    padding: 20px;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Popup shadow */
     text-align: center;
     z-index: 10;
+    display: none; /* Hidden by default */
 }
 
 #gameOverPopup h2 {
     margin-bottom: 20px;
+    color: #1c1c1e; /* Dark heading color */
 }
 
 #gameOverPopup button {
     padding: 10px 20px;
+    background-color: #0078d4;
+    color: white;
+    border: none;
+    border-radius: 10px;
     font-size: 1em;
     cursor: pointer;
+    transition: background-color 0.2s;
 }
 
-.hidden {
-    display: none;
+#gameOverPopup button:hover {
+    background-color: #005a9e; /* Darker blue on hover */
 }
 
-/* Responsive Design */
-@media (max-width: 1024px) {
-    #gameArea {
-        width: 90vw;
-        height: 80vh;
-    }
-    h1 {
-        font-size: 1.8em;
-    }
-}
+/* Responsive Design for better mobile experience */
 @media (max-width: 768px) {
-    #gameArea {
-        width: 90vw;
-        height: 70vh;
+    #gameContainer {
+        width: 95vw; /* More space on smaller screens */
+        height: 65vh; /* Adjust height to fit mobile */
     }
-    h1 {
-        font-size: 1.5em;
+
+    #indexContainer {
+        width: 95vw; /* Adjust container width on mobile */
+    }
+
+    .number {
+        font-size: 1.5em; /* Increase font size for better visibility */
     }
 }
+
 @media (max-width: 480px) {
-    #gameArea {
-        width: 90vw;
-        height: 60vh;
+    #gameContainer {
+        width: 95vw;
+        height: 60vh; /* Reduce height for very small screens */
     }
+
     h1 {
+        font-size: 1.2em; /* Adjust title font size for small screens */
+    }
+
+    #currentNumberDisplay {
         font-size: 1.2em;
+    }
+
+    #printButton, #shareButton, #tryAgainButton {
+        width: 100%; /* Make buttons take full width */
     }
 }
 
@@ -141,4 +282,43 @@ h1 {
         width: 100vw;
         height: 100vh;
     }
+}
+/* Game Over Popup Styling */
+#gameOverPopup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Popup shadow */
+    text-align: center;
+    z-index: 10;
+    display: none; /* Initially hidden */
+}
+
+#gameOverPopup h2 {
+    margin-bottom: 20px;
+    color: #1c1c1e; /* Dark heading color */
+}
+
+#gameOverPopup button {
+    padding: 10px 20px;
+    background-color: #0078d4;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#gameOverPopup button:hover {
+    background-color: #005a9e; /* Darker blue on hover */
+}
+
+/* Hidden class to hide elements */
+.hidden {
+    display: none !important;
 }

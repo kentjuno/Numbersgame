@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Number Order Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #333;
+        }
+        #gameArea {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            border: 2px solid #333;
+            background-color: white;
+            margin-bottom: 20px;
+        }
+        .number {
+            position: absolute;
+            font-weight: bold;
+            cursor: pointer;
+            transform-origin: center;
+        }
+        #timer, #score, #currentNumberDisplay {
+            margin-top: 10px;
+            font-size: 1.2em;
+        }
+        #currentNumberDisplay {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) { /* Tablet */
+            #gameArea {
+                width: 90vw;
+                height: 80vh;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            .number {
+                font-size: 1.2em;
+            }
+            #currentNumberDisplay {
+                font-size: 1.3em;
+            }
+            #timer, #score {
+                font-size: 1.1em;
+            }
+        }
+
+        @media (max-width: 768px) { /* Mobile */
+            #gameArea {
+                width: 90vw;
+                height: 70vh;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+            .number {
+                font-size: 1.2em;
+            }
+            #currentNumberDisplay {
+                font-size: 1.2em;
+            }
+            #timer, #score {
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) { /* Small Mobile */
+            #gameArea {
+                width: 90vw;
+                height: 60vh;
+            }
+            h1 {
+                font-size: 1.2em;
+            }
+            .number {
+                font-size: 1em;
+            }
+            #currentNumberDisplay {
+                font-size: 1.1em;
+            }
+            #timer, #score {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 id="greeting">Random Number Order Game</h1>
+
+    <div id="currentNumberDisplay">Current Number: 1</div> <!-- Current number display -->
+
+    <div id="gameArea"></div>
+    
+    <div id="timer">Time: 0 seconds</div>
+    <div id="score"></div>
+    
+    <script>
+        let shuffledNumbers, currentNumber, startTime, timerInterval;
+        let placedPositions = []; // Track all placed positions to avoid overlap
+        
+        const gameArea = document.getElementById('gameArea');
+        const timerElement = document.getElementById('timer');
+        const scoreElement = document.getElementById('score');
+        const currentNumberDisplay = document.getElementById('currentNumberDisplay');
+
+        function startGame() {
+            const playerName = localStorage.getItem('playerName');
+            const useBackgroundColor = JSON.parse(localStorage.getItem('useBackgroundColor'));
+            const totalNumbers = parseInt(localStorage.getItem('numberInput'));
+
+            // Greet the player
+            document.getElementById('greeting').textContent = `Hello, ${playerName}!`;
+
+            if (useBackgroundColor) {
+                // Apply random background color
+                const randomBackgroundColor = getRandomColor();
+                gameArea.style.backgroundColor = randomBackgroundColor;
+            } else {
+                // Apply white background
+                gameArea.style.backgroundColor = 'white';
+            }
+
+            shuffledNumbers = shuffleArray([...Array(totalNumbers).keys()].map(i => i + 1)); // Shuffle numbers
+            gameArea.innerHTML = ''; // Clear previous numbers
+            currentNumber = 1; // Start from 1
+            startTime = Date.now();
+            scoreElement.textContent = '';
+            placedPositions = []; // Reset placed positions
+
+            // Display the current number to pick
+            updateCurrentNumberDisplay();
+
+            // Display shuffled numbers in non-overlapping random positions
+            shuffledNumbers.forEach(number => {
+                const div = document.createElement('div');
+                div.className = 'number';
+                div.textContent = number;
+
+                // Apply random font size between 16px and 30px (doubled size)
+                const randomFontSize = Math.floor(Math.random() * 15) + 16; // Random size between 16 and 30
+                div.style.fontSize = randomFontSize + 'px';
+
+                gameArea.appendChild(div); // Temporarily add the element to get its size
+                
+                let position = getRandomNonOverlappingPosition(div);
+
+                div.style.left = position.x + 'px';  // Set horizontal position
+                div.style.top = position.y + 'px';   // Set vertical position
+                
+                // Apply random rotation between 0 and 360 degrees
+                const randomRotation = getRandomRotation();
+                div.style.transform = `rotate(${randomRotation}deg)`; 
+
+                div.addEventListener('click', () => checkNumber(div, number));
+            });
+
+            startTimer();
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function checkNumber(element, number) {
+            if (number === currentNumber) {
+                element.style.visibility = 'hidden'; // Hide the clicked number
+                currentNumber++;
+                if (currentNumber > shuffledNumbers.length) {
+                    endGame();
+                } else {
+                    updateCurrentNumberDisplay(); // Update the display to the next number
+                }
+            }
+        }
+
+        function updateCurrentNumberDisplay() {
+            currentNumberDisplay.textContent = `Current Number: ${currentNumber}`;
+        }
+
+        function startTimer() {
+            timerElement.textContent = 'Time: 0 seconds';
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+                timerElement.textContent = `Time: ${elapsedTime} seconds`;
+            }, 1000);
+        }
+
+        function endGame() {
+            clearInterval(timerInterval);
+            const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+            const playerName = localStorage.getItem('playerName');
+            scoreElement.textContent = `Great job, ${playerName}! Your time: ${elapsedTime} seconds.`;
+        }
+
+        // Get a random non-overlapping position
+        function getRandomNonOverlappingPosition(element) {
+            let x, y, overlap;
+            const maxAttempts = 100;
+            let attempts = 0;
+
+            const padding = 10; // Add extra space between elements
+            const elementWidth = element.offsetWidth + padding;
+            const elementHeight = element.offsetHeight + padding;
+
+            do {
+                x = Math.random() * (gameArea.clientWidth - elementWidth);
+                y = Math.random() * (gameArea.clientHeight - elementHeight);
+                overlap = checkOverlap(x, y, elementWidth, elementHeight);
+                attempts++;
+            } while (overlap && attempts < maxAttempts);
+
+            placedPositions.push({ x, y, width: elementWidth, height: elementHeight });
+            return { x, y };
+        }
+
+        // Check if the new element overlaps with existing ones
+        function checkOverlap(x, y, width, height) {
+            for (let pos of placedPositions) {
+                if (
+                    x < pos.x + pos.width &&
+                    x + width > pos.x &&
+                    y < pos.y + pos.height &&
+                    y + height > pos.y
+                ) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Get a random rotation angle between 0 and 360 degrees
+        function getRandomRotation() {
+            return Math.floor(Math.random() * 361); // Random angle between 0 and 360
+        }
+
+        // Get a random color
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        // Start the game when the page loads
+        window.onload = startGame;
+    </script>
+</body>
+</html>

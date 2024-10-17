@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Number Order Game - Options</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #333;
+        }
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        label {
+            margin-bottom: 10px;
+        }
+        input[type="text"], input[type="number"] {
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Random Number Order Game - Options</h1>
+    
+    <div class="options-container">
+        <label for="playerName">Enter your name:</label>
+        <input type="text" id="playerName" placeholder="Your name">
+
+        <label for="backgroundToggle">
+            <input type="checkbox" id="backgroundToggle" checked> Use random background color
+        </label>
+
+        <label for="numberInput">How many numbers:</label>
+        <input type="number" id="numberInput" min="1" max="100" value="20">
+
+        <button id="startButton">Start Game</button>
+    </div>
+
+    <script>
+        document.getElementById('startButton').addEventListener('click', function() {
+            const playerName = document.getElementById('playerName').value.trim();
+            const useBackgroundColor = document.getElementById('backgroundToggle').checked;
+            const numberInput = parseInt(document.getElementById('numberInput').value);
+
+            if (!playerName) {
+                alert("Please enter your name.");
+                return;
+            }
+
+            if (isNaN(numberInput) || numberInput <= 0) {
+                alert("Please enter a valid number of numbers.");
+                return;
+            }
+
+            // Store the options in localStorage to pass them to the game page
+            localStorage.setItem('playerName', playerName);
+            localStorage.setItem('useBackgroundColor', useBackgroundColor);
+            localStorage.setItem('numberInput', numberInput);
+
+            // Navigate to the game page
+            window.location.href = "game.html";
+        });
+    </script>
+</body>
+</html>
